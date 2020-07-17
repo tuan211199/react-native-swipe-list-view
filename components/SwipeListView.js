@@ -27,7 +27,7 @@ class SwipeListView extends PureComponent {
             this.yScrollOffset = 0;
             this.layoutHeight = 0;
             this.listViewProps = {
-                onLayout: e => this.onLayout(e),
+                onLayout: (e) => this.onLayout(e),
                 onContentSizeChange: (w, h) => this.onContentSizeChange(w, h),
             };
         }
@@ -158,11 +158,13 @@ class SwipeListView extends PureComponent {
     }
 
     closeAllOpenRows() {
-        Object.keys(this._rows).forEach(rowKey => {
+        Object.keys(this._rows).forEach((rowKey) => {
             const row = this._rows[rowKey];
-            const rowTranslateX = Math.round(row.currentTranslateX || 0);
-            if (row.closeRow && rowTranslateX !== 0) {
-                row.closeRow();
+            if (row != null) {
+                const rowTranslateX = Math.round(row.currentTranslateX || 0);
+                if (row.closeRow && rowTranslateX !== 0) {
+                    row.closeRow();
+                }
             }
         });
     }
@@ -171,9 +173,9 @@ class SwipeListView extends PureComponent {
         if (!HiddenComponent) {
             return React.cloneElement(VisibleComponent, {
                 ...VisibleComponent.props,
-                ref: row => (this._rows[key] = row),
-                onRowOpen: toValue => this.onRowOpen(key, toValue),
-                onRowDidOpen: toValue =>
+                ref: (row) => (this._rows[key] = row),
+                onRowOpen: (toValue) => this.onRowOpen(key, toValue),
+                onRowDidOpen: (toValue) =>
                     this.props.onRowDidOpen &&
                     this.props.onRowDidOpen(key, this._rows, toValue),
                 onRowClose: () =>
@@ -183,7 +185,7 @@ class SwipeListView extends PureComponent {
                     this.props.onRowDidClose &&
                     this.props.onRowDidClose(key, this._rows),
                 onRowPress: () => this.onRowPress(),
-                setScrollEnabled: enable => this.setScrollEnabled(enable),
+                setScrollEnabled: (enable) => this.setScrollEnabled(enable),
                 swipeGestureBegan: () => this.rowSwipeGestureBegan(key),
                 swipeGestureEnded: (_, data) =>
                     this.rowSwipeGestureEnded(key, data),
@@ -193,20 +195,20 @@ class SwipeListView extends PureComponent {
                 <SwipeRow
                     onSwipeValueChange={
                         this.props.onSwipeValueChange
-                            ? data =>
+                            ? (data) =>
                                   this.props.onSwipeValueChange({
                                       ...data,
                                       key,
                                   })
                             : null
                     }
-                    ref={row => (this._rows[key] = row)}
+                    ref={(row) => (this._rows[key] = row)}
                     swipeGestureBegan={() => this.rowSwipeGestureBegan(key)}
                     swipeGestureEnded={(_, data) =>
                         this.rowSwipeGestureEnded(key, data)
                     }
-                    onRowOpen={toValue => this.onRowOpen(key, toValue)}
-                    onRowDidOpen={toValue =>
+                    onRowOpen={(toValue) => this.onRowOpen(key, toValue)}
+                    onRowDidOpen={(toValue) =>
                         this.props.onRowDidOpen &&
                         this.props.onRowDidOpen(key, this._rows, toValue)
                     }
@@ -253,7 +255,7 @@ class SwipeListView extends PureComponent {
                     }
                     onLeftActionStatusChange={
                         this.props.onLeftActionStatusChange
-                            ? data =>
+                            ? (data) =>
                                   this.props.onLeftActionStatusChange({
                                       ...data,
                                       key,
@@ -262,7 +264,7 @@ class SwipeListView extends PureComponent {
                     }
                     onRightActionStatusChange={
                         this.props.onRightActionStatusChange
-                            ? data =>
+                            ? (data) =>
                                   this.props.onRightActionStatusChange({
                                       ...data,
                                       key,
@@ -278,7 +280,7 @@ class SwipeListView extends PureComponent {
                                   )
                             : null
                     }
-                    setScrollEnabled={enable => this.setScrollEnabled(enable)}
+                    setScrollEnabled={(enable) => this.setScrollEnabled(enable)}
                     leftOpenValue={
                         item.leftOpenValue || this.props.leftOpenValue
                     }
@@ -384,9 +386,9 @@ class SwipeListView extends PureComponent {
         );
     }
 
-    _renderItem = rowData => this.renderItem(rowData, this._rows);
+    _renderItem = (rowData) => this.renderItem(rowData, this._rows);
 
-    _onRef = c => this.setRefs(c);
+    _onRef = (c) => this.setRefs(c);
 
     render() {
         const { useSectionList, renderListView, ...props } = this.props;
